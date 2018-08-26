@@ -31,6 +31,7 @@ const buildVues = (callback) => {
       script: {},
       template: {},
       style: {},
+      i18n: {}
     };
 
     const langCheck = (file, extension, type) => {
@@ -51,7 +52,7 @@ const buildVues = (callback) => {
           lang: extension,
         };
 
-        if (scoped) {
+        if (style) {
           sources.style[name].scoped = true;
         }
 
@@ -67,12 +68,16 @@ const buildVues = (callback) => {
       const script = sources.script[name];
       const style = sources.style[name];
       const template = sources.template[name];
+      const i18n = sources.i18n[name];
 
       const relate = file => `.${path.sep}${path.relative(dirname, file)}`;
 
       data += `<script src="${relate(script.file)}" lang="${script.lang}"></script>\n`;
       data += `<style src="${relate(style.file)}" lang="${style.lang}"${style.scoped ? ' scoped' : ''}></style>\n`;
       data += `<template src="${relate(template.file)}" lang="${template.lang}"></template>\n`;
+      if (i18n)
+        data += `<i18n src="${relate(i18n.file)}"></i18n>\n`;
+      }
 
       return data;
     };
@@ -88,6 +93,10 @@ const buildVues = (callback) => {
 
       if (langCheck(file, 'css', 'style')) {
         return;
+      }
+    
+      if (langCheck(file, 'i18n', 'i18n')) {
+        return; 
       }
 
       // HTML alternatives
