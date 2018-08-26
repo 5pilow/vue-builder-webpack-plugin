@@ -73,7 +73,9 @@ const buildVues = (callback) => {
       const relate = file => `.${path.sep}${path.relative(dirname, file)}`;
 
       data += `<script src="${relate(script.file)}" lang="${script.lang}"></script>\n`;
-      data += `<style src="${relate(style.file)}" lang="${style.lang}"${style.scoped ? ' scoped' : ''}></style>\n`;
+      if (style) {
+        data += `<style src="${relate(style.file)}" lang="${style.lang}"${style.scoped ? ' scoped' : ''}></style>\n`;
+      }
       data += `<template src="${relate(template.file)}" lang="${template.lang}"></template>\n`;
       if (i18n) {
         data += `<i18n src="${relate(i18n.file)}"></i18n>\n`;
@@ -140,7 +142,7 @@ const buildVues = (callback) => {
         dest = path.dirname(vue);
       }
 
-      if (sources.script[vue] && sources.style[vue] && sources.template[vue]) {
+      if (sources.script[vue] && sources.template[vue]) {
          let data = singleVue(vue, path.dirname(dest))
          if (!fs.existsSync(`${dest}.vue`) || fs.readFileSync(`${dest}.vue`).toString() !== data) {
            fs.writeFileSync(`${dest}.vue`, data, 'utf8');
