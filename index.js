@@ -5,7 +5,7 @@ const fs = require('fs');
 let directory = __dirname;
 let folder = false;
 
-const VueBuilderPlugin = (options) => {
+function VueBuilderPlugin(options) {
   if (path.isAbsolute(options.path)) {
     directory = options.path;
   } else {
@@ -52,7 +52,7 @@ const buildVues = (callback) => {
           lang: extension,
         };
 
-        if (style) {
+        if (type == "style") {
           sources.style[name].scoped = true;
         }
 
