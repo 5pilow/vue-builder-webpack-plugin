@@ -142,7 +142,7 @@ const buildVues = (callback) => {
 
       if (sources.script[vue] && sources.style[vue] && sources.template[vue]) {
          let data = singleVue(vue, path.dirname(dest))
-         if (fs.readFileSync(`${dest}.vue`).toString() !== data) {
+         if (!fs.existsSync(`${dest}.vue`) || fs.readFileSync(`${dest}.vue`).toString() !== data) {
            fs.writeFileSync(`${dest}.vue`, data, 'utf8');
          }
       }
