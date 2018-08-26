@@ -75,7 +75,7 @@ const buildVues = (callback) => {
       data += `<script src="${relate(script.file)}" lang="${script.lang}"></script>\n`;
       data += `<style src="${relate(style.file)}" lang="${style.lang}"${style.scoped ? ' scoped' : ''}></style>\n`;
       data += `<template src="${relate(template.file)}" lang="${template.lang}"></template>\n`;
-      if (i18n)
+      if (i18n) {
         data += `<i18n src="${relate(i18n.file)}"></i18n>\n`;
       }
 
