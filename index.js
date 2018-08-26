@@ -141,7 +141,10 @@ const buildVues = (callback) => {
       }
 
       if (sources.script[vue] && sources.style[vue] && sources.template[vue]) {
-        fs.writeFileSync(`${dest}.vue`, singleVue(vue, path.dirname(dest)), 'utf8');
+         let data = singleVue(vue, path.dirname(dest))
+         if (fs.readFileSync(`${dest}.vue`).toString() !== data) {
+           fs.writeFileSync(`${dest}.vue`, data, 'utf8');
+         }
       }
     });
 
@@ -152,19 +155,6 @@ const buildVues = (callback) => {
 VueBuilderPlugin.prototype.apply = (compiler) => {
   compiler.plugin('run', (compilation, callback) => buildVues(callback));
   compiler.plugin('watch-run', (compilation, callback) => buildVues(callback));
-
-  compiler.plugin('after-compile', (compilation, callback) => {
-    // eslint-disable-next-line no-param-reassign
-    compilation.fileDependencies = Array.from(compilation.fileDependencies).filter((file) => {
-      if (file.slice(-4) === '.vue') {
-        return false;
-      }
-
-      return true;
-    });
-
-    callback();
-  });
 };
 
 module.exports = VueBuilderPlugin;
