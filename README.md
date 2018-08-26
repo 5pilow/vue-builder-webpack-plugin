@@ -42,12 +42,13 @@ Whenever you run webpack in normal or watch mode, this plugin will automatically
 
 ## Example
 
-If you have the following files, `App.vue.js`, `App.vue.css`, `App.vue.html`, the generated `App.vue` file will look like this:
+If you have the following files, `App.vue.js`, `App.vue.css`, `App.vue.html`, `App.vue.i18n`, the generated `App.vue` file will look like this:
 
 ```vue
 <template src="./App.vue.html" lang="html"></template>
 <script src="./App.vue.js" lang="js"></script>
 <style src="./App.vue.css" lang="css"></style>
+<i18n src="./App.vue.i18n"></i18n>
 ```
 
 You can also rename the `App.vue.css` to `App.scoped.vue.css` to generate the following `style` tag:
