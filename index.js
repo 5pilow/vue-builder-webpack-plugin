@@ -37,6 +37,15 @@ const buildVues = (callback) => {
     const langCheck = (file, extension, type) => {
       const length = -5 - extension.length;
       let scoped = false;
+      
+      if (file.slice(-5) === `.i18n`) {
+		let name = file.slice(0, -12);
+		if (!sources.i18n[name]) {
+			sources.i18n[name] = []
+		}
+		sources.i18n[name].push({file: file})
+		return true
+	  }
 
       if (file.slice(length) === `.vue.${extension}`) {
         let name = file.slice(0, length);
@@ -52,10 +61,9 @@ const buildVues = (callback) => {
           lang: extension,
         };
 
-        if (type == "style") {
+        if (type == "style" && name.slice(-4) != '/app') {
           sources.style[name].scoped = true;
         }
-
         return true;
       }
 
@@ -77,8 +85,11 @@ const buildVues = (callback) => {
         data += `<style src="${relate(style.file)}" lang="${style.lang}"${style.scoped ? ' scoped' : ''}></style>\n`;
       }
       data += `<template src="${relate(template.file)}" lang="${template.lang}"></template>\n`;
+      
       if (i18n) {
-        data += `<i18n src="${relate(i18n.file)}"></i18n>\n`;
+		  for (let i of i18n) {
+			data += `<i18n src="${relate(i.file)}"></i18n>\n`;
+		}
       }
 
       return data;
